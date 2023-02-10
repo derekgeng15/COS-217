@@ -5,7 +5,9 @@ enum STATE {
     NORMAL, STARTCOMMENT, INCOMMENT, ENDCOMMENT, SINGLESTR, DOUBLESTR, IGNORESINGLE, IGNOREDOUBLE
 };
 
+/* normal state handler */
 enum STATE normal(char input) {
+    /* transition to other states */
     switch (input) {
         case '/':
             return STARTCOMMENT;
@@ -20,18 +22,21 @@ enum STATE normal(char input) {
     return NORMAL;
 }
 
+/* startcomment state handler */
 enum STATE startComment(char input) {
     /* handle false start comment */
     if (input != '*') {
         putchar('/');
         return normal(input);
     }
-
+    /* add space and transition to incomment state */
     putchar(' ');
     return INCOMMENT;
 }
 
+/* incomment state handler */
 enum STATE inComment(char input) {
+    /* transition to end comment state */
     if (input == '*')
         return ENDCOMMENT;
     if (input == '\n') /* accounting for new lines */
@@ -39,6 +44,7 @@ enum STATE inComment(char input) {
     return INCOMMENT;
 }
 
+/* endcomment state handler */
 enum STATE endComment(char input) {
     /* handle false end comment */
     if (input != '/')
@@ -46,8 +52,10 @@ enum STATE endComment(char input) {
     return NORMAL;
 }
 
+/* singleSTR state handler */
 enum STATE singleSTR(char input) {
     putchar(input);
+    /* transition to other states*/
     switch (input) {
         case '\\':
             return IGNORESINGLE;
@@ -57,8 +65,10 @@ enum STATE singleSTR(char input) {
     return SINGLESTR;
 }
 
+/* doubleSTR state handler */
 enum STATE doubleSTR(char input) {
     putchar(input);
+    /* transition to other states*/
     switch (input) {
         case '\\':
             return IGNOREDOUBLE;
@@ -68,16 +78,19 @@ enum STATE doubleSTR(char input) {
     return DOUBLESTR;
 }
 
+/* ignoreSingle state handler */
 enum STATE ignoreSingle(char input) {
     putchar(input);
     return SINGLESTR;
 }
 
+/* ignoreDouble state handler */
 enum STATE ignoreDouble(char input) {
     putchar(input);
     return DOUBLESTR;
 }
 
+/* main driver function*/
 int main() {
     int input; /* next input character */
     enum STATE state = NORMAL; /* current state */
