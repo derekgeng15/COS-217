@@ -62,7 +62,7 @@ enum STATE doubleSTR(char input) {
     switch (input) {
         case '\\':
             return IGNOREDOUBLE;
-        case '\'':
+        case '\"':
             return NORMAL;
     }
     return DOUBLESTR;
