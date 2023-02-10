@@ -21,36 +21,29 @@ enum STATE normal(char input) {
 }
 
 enum STATE startComment(char input) {
-    if (input == '*'){
-        putchar(' ');
-        return INCOMMENT;
-    }
-    if (input == '/')
-        return STARTCOMMENT;
     /* handle false start comment */
-    putchar('/');
-    putchar(input);
-    return NORMAL;
+    if (input != '*') {
+        putchar('/');
+        return normal(input);
+    }
 
+    putchar(' ');
+    return INCOMMENT;
 }
 
 enum STATE inComment(char input) {
     if (input == '*')
         return ENDCOMMENT;
-    if (input == '\n')
+    if (input == '\n') /* accounting for new lines */
         putchar(input);
     return INCOMMENT;
 }
 
 enum STATE endComment(char input) {
-    if (input == '/') 
-        return NORMAL;
-    if (input == '*')
-        return ENDCOMMENT;
     /* handle false end comment */
-    if (input == '\n')
-        putchar(input);
-    return INCOMMENT;
+    if (input != '/')
+        return inComment(input);
+    return NORMAL;
 }
 
 enum STATE singleSTR(char input) {
@@ -118,6 +111,7 @@ int main() {
                 break;
         }
     }
+    if (state == STARTCOMMENT) putchar('/');
     if (state == INCOMMENT || state == ENDCOMMENT)
         return EXIT_FAILURE;
     return 0;
