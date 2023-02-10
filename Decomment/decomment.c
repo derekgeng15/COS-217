@@ -131,7 +131,7 @@ int main() {
     }
     if (state == STARTCOMMENT) putchar('/'); 
     if (state == INCOMMENT || state == ENDCOMMENT) {
-        fprintf(stderr, "Error: line %d: unterminated comment", commentLine);
+        fprintf(stderr, "Error: line %d: unterminated comment\n", commentLine);
         return EXIT_FAILURE;
     }
     return 0;
