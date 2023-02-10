@@ -86,7 +86,7 @@ enum STATE ignoreDouble(char input) {
 }
 
 int main() {
-    char input; /* next input character */
+    int input; /* next input character */
     enum STATE state = NORMAL; /* current state */
 
     /* continue reading characters until end of file */
