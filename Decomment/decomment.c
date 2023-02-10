@@ -81,14 +81,19 @@ enum STATE ignoreDouble(char input) {
 int main() {
     int input; /* next input character */
     enum STATE state = NORMAL; /* current state */
+    int line = 1; /* current line number */
+    int commentLine; /* starting comment line */
 
     /* continue reading characters until end of file */
     while ((input = getchar()) != EOF) {
+        line += (input == '\n'); /* increment line count*/
         switch (state) {
+            /* call the proper state handler based on DFA*/
             case NORMAL:
                 state = normal(input);
                 break;
             case STARTCOMMENT:
+                commentLine = line;
                 state = startComment(input);
                 break;
             case INCOMMENT:
@@ -111,8 +116,10 @@ int main() {
                 break;
         }
     }
-    if (state == STARTCOMMENT) putchar('/');
-    if (state == INCOMMENT || state == ENDCOMMENT)
+    if (state == STARTCOMMENT) putchar('/'); 
+    if (state == INCOMMENT || state == ENDCOMMENT) {
+        fprintf(stderr, "Error: line %d: unterminated comment", commentLine);
         return EXIT_FAILURE;
+    }
     return 0;
 }
