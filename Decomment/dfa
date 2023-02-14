@@ -1,0 +1,28 @@
+NORMAL (accept)
+    /:  STARTCOMMENT
+    ':  SINGLESTR
+    ":  DOUBLESTR
+    other:  NORMAL
+STARTCOMMENT (accept)
+    /:  STARTCOMMENT
+    ':  SINGLESTR
+    ":  DOUBLESTR
+    *:  INCOMMENT
+    other:  NORMAL
+INCOMMENT (reject)
+    *:  ENDCOMMENT
+    other:  INCOMMENT
+ENDCOMMENT (reject)
+    /:  NORMAL
+    *:  ENDCOMMENT
+    other:  INCOMMENT
+SINGLESTR (accept)
+    \:  IGNORESINGLE
+    ':  NORMAL
+DOUBLESTR (accept)
+    \:  IGNORESINGLE
+    ":  NORMAL
+IGNORESINGLE (accept)
+    other:  SINGLESTR
+IGNOREDOUBLE (accept)
+    other:  DOUBLESTR

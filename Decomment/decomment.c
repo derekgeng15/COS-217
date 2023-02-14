@@ -1,33 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* states for decomment DFA. Functions and variables
+   with s_ indicates a state type */
 enum STATE {
-    NORMAL, STARTCOMMENT, INCOMMENT, ENDCOMMENT, SINGLESTR, DOUBLESTR, IGNORESINGLE, IGNOREDOUBLE
+    NORMAL, STARTCOMMENT, INCOMMENT, ENDCOMMENT, 
+    SINGLESTR, DOUBLESTR, IGNORESINGLE, IGNOREDOUBLE
 };
 
 /* normal state handler */
-enum STATE normal(char input) {
+/* default state, enters str and comment
+   states based on inputs */
+enum STATE s_normalHandler(char cinput) {
     /* transition to other states */
-    switch (input) {
+    switch (cinput) {
         case '/':
             return STARTCOMMENT;
         case '\'':
-            putchar(input);
+            putchar(cinput);
             return SINGLESTR;
         case '"':
-            putchar(input);
+            putchar(cinput);
             return DOUBLESTR;
     }
-    putchar(input);
+    putchar(cinput);
     return NORMAL;
 }
 
 /* startcomment state handler */
-enum STATE startComment(char input) {
+/* enters incomment state if a real comment,
+   otherwise handle similar to normal state */
+enum STATE s_startCommentHandler(char cinput) {
     /* handle false start comment */
-    if (input != '*') {
-        putchar('/');
-        return normal(input);
+    if (cinput != '*') {
+        /* handle similar to normal */
+        switch (cinput) {
+        case '/':
+            return STARTCOMMENT;
+        case '\'':
+            putchar(cinput);
+            return SINGLESTR;
+        case '"':
+            putchar(cinput);
+            return DOUBLESTR;
+        }
+        putchar(cinput);
+        return NORMAL;
     }
     /* add space and transition to incomment state */
     putchar(' ');
@@ -35,28 +53,39 @@ enum STATE startComment(char input) {
 }
 
 /* incomment state handler */
-enum STATE inComment(char input) {
+/* inside a comment, ignores characters 
+   except for newlines */
+enum STATE s_inCommentHandler(char cinput) {
     /* transition to end comment state */
-    if (input == '*')
+    if (cinput == '*')
         return ENDCOMMENT;
-    if (input == '\n') /* accounting for new lines */
-        putchar(input);
+    if (cinput == '\n') /* accounting for new lines */
+        putchar(cinput);
     return INCOMMENT;
 }
 
 /* endcomment state handler */
-enum STATE endComment(char input) {
+/* exits comment if true endcomment, 
+   othewise handles similar to incomment */
+enum STATE s_endCommentHandler(char cinput) {
     /* handle false end comment */
-    if (input != '/')
-        return inComment(input);
+    if (cinput != '/') {
+        if (cinput == '*')
+            return ENDCOMMENT;
+        if (cinput == '\n') /* accounting for new lines */
+        putchar(cinput);
+        return INCOMMENT;
+    }
     return NORMAL;
 }
 
 /* singleSTR state handler */
-enum STATE singleSTR(char input) {
-    putchar(input);
-    /* transition to other states*/
-    switch (input) {
+/* inside single quote str, will exit if 
+   another single quote is seen */
+enum STATE s_singleSTRHandler(char cinput) {
+    putchar(cinput);
+    /* transition to other states */
+    switch (cinput) {
         case '\\':
             return IGNORESINGLE;
         case '\'':
@@ -66,10 +95,12 @@ enum STATE singleSTR(char input) {
 }
 
 /* doubleSTR state handler */
-enum STATE doubleSTR(char input) {
-    putchar(input);
+/* inside double quote str, will exit if 
+   another double quote is seen */
+enum STATE s_doubleSTRHandler(char cinput) {
+    putchar(cinput);
     /* transition to other states*/
-    switch (input) {
+    switch (cinput) {
         case '\\':
             return IGNOREDOUBLE;
         case '\"':
@@ -79,60 +110,66 @@ enum STATE doubleSTR(char input) {
 }
 
 /* ignoreSingle state handler */
-enum STATE ignoreSingle(char input) {
-    putchar(input);
+/* ignores backslash and returns to single str */
+enum STATE s_ignoreSingleHandler(char cinput) {
+    putchar(cinput);
     return SINGLESTR;
 }
 
 /* ignoreDouble state handler */
-enum STATE ignoreDouble(char input) {
-    putchar(input);
+/* ignores backslash and returns to double str */
+enum STATE s_ignoreDoubleHandler(char cinput) {
+    putchar(cinput);
     return DOUBLESTR;
 }
 
 /* main driver function*/
 int main() {
-    int input; /* next input character */
-    enum STATE state = NORMAL; /* current state */
-    int line = 1; /* current line number */
-    int commentLine; /* starting comment line */
+    int iinput; /* next input character */
+    enum STATE sstate = NORMAL; /* start state is normal */
+    int iline = 1; /* current line number */
+    int icommentLine; /* starting line of current comment */
 
     /* continue reading characters until end of file */
-    while ((input = getchar()) != EOF) {
-        line += (input == '\n'); /* increment line count*/
-        switch (state) {
-            /* call the proper state handler based on DFA*/
+    while ((iinput = getchar()) != EOF) {
+        iline += (iinput == '\n'); /* increment line count */
+        switch (sstate) {
+            /* call the proper state handler based on DFA */
             case NORMAL:
-                state = normal(input);
+                sstate = s_normalHandler(iinput);
                 break;
             case STARTCOMMENT:
-                commentLine = line;
-                state = startComment(input);
+                icommentLine = iline; /* track starting comment line */
+                sstate = s_startCommentHandler(iinput);
                 break;
             case INCOMMENT:
-                state = inComment(input);
+                sstate = s_inCommentHandler(iinput);
                 break;
             case ENDCOMMENT:
-                state = endComment(input);
+                sstate = s_endCommentHandler(iinput);
                 break;
             case SINGLESTR:
-                state = singleSTR(input);
+                sstate = s_singleSTRHandler(iinput);
                 break;
             case DOUBLESTR:
-                state = doubleSTR(input);
+                sstate = s_doubleSTRHandler(iinput);
                 break;
             case IGNORESINGLE:
-                state = ignoreSingle(input);
+                sstate = s_ignoreSingleHandler(iinput);
                 break;
             case IGNOREDOUBLE:
-                state = ignoreDouble(input);
+                sstate = s_ignoreDoubleHandler(iinput);
                 break;
         }
     }
-    if (state == STARTCOMMENT) putchar('/'); 
-    if (state == INCOMMENT || state == ENDCOMMENT) {
-        fprintf(stderr, "Error: line %d: unterminated comment\n", commentLine);
+    /* handle false startcomment */
+    if (sstate == STARTCOMMENT) putchar('/'); 
+
+    /* raise error for unterminated comments */
+    if (sstate == INCOMMENT || sstate == ENDCOMMENT) {
+        fprintf(stderr, "Error: line %d: unterminated comment\n", icommentLine);
         return EXIT_FAILURE;
     }
+
     return 0;
 }
