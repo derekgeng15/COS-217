@@ -20,7 +20,7 @@ SINGLESTR (accept)
     \:  IGNORESINGLE
     ':  NORMAL
 DOUBLESTR (accept)
-    \:  IGNORESINGLE
+    \:  IGNOREDOUBLE
     ":  NORMAL
 IGNORESINGLE (accept)
     other:  SINGLESTR

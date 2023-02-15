@@ -33,6 +33,7 @@ enum STATE s_normalHandler(char cinput) {
 enum STATE s_startCommentHandler(char cinput) {
     /* handle false start comment */
     if (cinput != '*') {
+	putchar('/');
         /* handle similar to normal */
         switch (cinput) {
         case '/':
@@ -74,7 +75,7 @@ enum STATE s_endCommentHandler(char cinput) {
             return ENDCOMMENT;
         if (cinput == '\n') /* accounting for new lines */
         putchar(cinput);
-        return INCOMMENT;
+	return INCOMMENT;
     }
     return NORMAL;
 }
