@@ -75,13 +75,11 @@ Str_copy:
 	str	x0, [sp, 24]
 	str	x1, [sp, 16]
 	ldr	x0, [sp, 24]
-	str	x0, [sp, 40]
-	ldr	x0, [sp, 24]
 	cmp	x0, 0
 	beq	.L7
 	ldr	x0, [sp, 16]
 	cmp	x0, 0
-	bne	.L9
+	bne	.L8
 .L7:
 	adrp	x0, __PRETTY_FUNCTION__.3308
 	add	x3, x0, :lo12:__PRETTY_FUNCTION__.3308
@@ -91,6 +89,10 @@ Str_copy:
 	adrp	x0, .LC2
 	add	x0, x0, :lo12:.LC2
 	bl	__assert_fail
+.L8:
+	ldr	x0, [sp, 24]
+	str	x0, [sp, 40]
+	b	.L9
 .L10:
 	ldr	x1, [sp, 16]
 	add	x0, x1, 1
@@ -130,22 +132,24 @@ Str_concat:
 	str	x0, [sp, 24]
 	str	x1, [sp, 16]
 	ldr	x0, [sp, 24]
-	str	x0, [sp, 40]
-	ldr	x0, [sp, 24]
 	cmp	x0, 0
 	beq	.L13
 	ldr	x0, [sp, 16]
 	cmp	x0, 0
-	bne	.L15
+	bne	.L14
 .L13:
 	adrp	x0, __PRETTY_FUNCTION__.3317
 	add	x3, x0, :lo12:__PRETTY_FUNCTION__.3317
-	mov	w2, 31
+	mov	w2, 32
 	adrp	x0, .LC0
 	add	x1, x0, :lo12:.LC0
 	adrp	x0, .LC2
 	add	x0, x0, :lo12:.LC2
 	bl	__assert_fail
+.L14:
+	ldr	x0, [sp, 24]
+	str	x0, [sp, 40]
+	b	.L15
 .L16:
 	ldr	x0, [sp, 40]
 	add	x0, x0, 1
@@ -208,7 +212,7 @@ Str_compare:
 .L21:
 	adrp	x0, __PRETTY_FUNCTION__.3328
 	add	x3, x0, :lo12:__PRETTY_FUNCTION__.3328
-	mov	w2, 44
+	mov	w2, 46
 	adrp	x0, .LC0
 	add	x1, x0, :lo12:.LC0
 	adrp	x0, .LC3
@@ -269,10 +273,6 @@ Str_search:
 	str	x0, [sp, 24]
 	str	x1, [sp, 16]
 	ldr	x0, [sp, 24]
-	str	x0, [sp, 40]
-	ldr	x0, [sp, 16]
-	str	x0, [sp, 32]
-	ldr	x0, [sp, 24]
 	cmp	x0, 0
 	beq	.L28
 	ldr	x0, [sp, 16]
@@ -281,13 +281,17 @@ Str_search:
 .L28:
 	adrp	x0, __PRETTY_FUNCTION__.3338
 	add	x3, x0, :lo12:__PRETTY_FUNCTION__.3338
-	mov	w2, 58
+	mov	w2, 61
 	adrp	x0, .LC0
 	add	x1, x0, :lo12:.LC0
 	adrp	x0, .LC4
 	add	x0, x0, :lo12:.LC4
 	bl	__assert_fail
 .L29:
+	ldr	x0, [sp, 24]
+	str	x0, [sp, 40]
+	ldr	x0, [sp, 16]
+	str	x0, [sp, 32]
 	ldr	x0, [sp, 16]
 	ldrb	w0, [x0]
 	cmp	w0, 0
@@ -302,13 +306,6 @@ Str_search:
 	b	.L33
 .L35:
 	ldr	x0, [sp, 32]
-	ldrb	w0, [x0]
-	cmp	w0, 0
-	bne	.L34
-	ldr	x0, [sp, 24]
-	b	.L31
-.L34:
-	ldr	x0, [sp, 32]
 	add	x0, x0, 1
 	str	x0, [sp, 32]
 	ldr	x0, [sp, 40]
@@ -316,11 +313,20 @@ Str_search:
 	str	x0, [sp, 40]
 .L33:
 	ldr	x0, [sp, 40]
+	ldrb	w0, [x0]
+	cmp	w0, 0
+	beq	.L34
+	ldr	x0, [sp, 32]
+	ldrb	w0, [x0]
+	cmp	w0, 0
+	beq	.L34
+	ldr	x0, [sp, 40]
 	ldrb	w1, [x0]
 	ldr	x0, [sp, 32]
 	ldrb	w0, [x0]
 	cmp	w1, w0
 	beq	.L35
+.L34:
 	ldr	x0, [sp, 32]
 	ldrb	w0, [x0]
 	cmp	w0, 0

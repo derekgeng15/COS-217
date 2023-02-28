@@ -1,0 +1,3 @@
+./teststra
+./teststrp
+./testreplace

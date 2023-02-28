@@ -16,8 +16,9 @@ size_t Str_getLength(const char *pcSrc) {
 }
 
 char *Str_copy(char *pcDest, const char *pcSrc) {
-    char *pcTempDest = pcDest; /* temp pointer to pcDest */
+    char *pcTempDest; /* temp pointer to pcDest */
     assert(pcDest != NULL && pcSrc != NULL);
+    pcTempDest = pcDest;
     /* while pcSrc isn't null, copy pcSrc into pcTempDest */
     while (*pcSrc != '\0')
         *(pcTempDest++) = *(pcSrc++);
@@ -27,8 +28,9 @@ char *Str_copy(char *pcDest, const char *pcSrc) {
 }
 
 char *Str_concat(char *pcDest, const char *pcSrc) {
-    char *pcTempDest = pcDest; /* temp pointer to pcDest */
+    char *pcTempDest; /* temp pointer to pcDest */
     assert(pcDest != NULL && pcSrc != NULL);
+    pcTempDest = pcDest;
     /* move pcTempDest to end of pcDest */
     while (*pcTempDest != '\0')
         pcTempDest++;
@@ -52,10 +54,13 @@ int Str_compare(const char *pcS1, const char *pcS2) {
     /* return difference in characters to determine order */
     return (int)(*pcS1 - *pcS2);
 }
+
 char *Str_search(const char *pcHaystack, const char *pcNeedle) {
-    const char * pcTempHaystack = pcHaystack; /* temp pointer to haystack*/
-    const char * pcTempNeedle = pcNeedle; /* temp pointer to needle */
+    const char * pcTempHaystack; /* temp pointer to haystack*/
+    const char * pcTempNeedle; /* temp pointer to needle */
     assert(pcHaystack != NULL && pcNeedle != NULL);
+    pcTempHaystack = pcHaystack;
+    pcTempNeedle = pcNeedle;
     if (*pcNeedle == '\0') /* handle empty needle edgecase */
         return (char *)pcHaystack;
 
@@ -64,7 +69,7 @@ char *Str_search(const char *pcHaystack, const char *pcNeedle) {
         pcTempNeedle = pcNeedle;
         pcTempHaystack = pcHaystack;
         /* increment until end of one string or no longer matching */
-        while (*pcTempHaystack != '\0' && pcTempNeedle != '\0' 
+        while (*pcTempHaystack != '\0' && *pcTempNeedle != '\0' 
                 && *pcTempHaystack == *pcTempNeedle)
             pcTempNeedle++, pcTempHaystack++;
         /* if end of pcTempNeedle is reached, return address of match */

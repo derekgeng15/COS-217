@@ -633,25 +633,26 @@ int Str_compare(const char pcS1[], const char pcS2[]) {
 
     return (int)(pcS1[i] - pcS2[i]);
 }
+
 char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     int i = 0;
     int j = 0;
     
-# 57 "stra.c" 3 4
+# 58 "stra.c" 3 4
    ((
-# 57 "stra.c"
+# 58 "stra.c"
    pcHaystack != 
-# 57 "stra.c" 3 4
+# 58 "stra.c" 3 4
    ((void *)0) 
-# 57 "stra.c"
+# 58 "stra.c"
    && pcNeedle != 
-# 57 "stra.c" 3 4
+# 58 "stra.c" 3 4
    ((void *)0)) ? (void) (0) : __assert_fail (
-# 57 "stra.c"
+# 58 "stra.c"
    "pcHaystack != NULL && pcNeedle != NULL"
-# 57 "stra.c" 3 4
-   , "stra.c", 57, __extension__ __PRETTY_FUNCTION__))
-# 57 "stra.c"
+# 58 "stra.c" 3 4
+   , "stra.c", 58, __extension__ __PRETTY_FUNCTION__))
+# 58 "stra.c"
                                                  ;
     if (pcNeedle[0] == '\0')
         return (char *)pcHaystack;
@@ -659,11 +660,9 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     while (pcHaystack[i] != '\0') {
         j = 0;
 
-        while (pcHaystack[i + j] == pcNeedle[j]) {
-            if (pcNeedle[j] == '\0')
-                return (char *)(&pcHaystack[i]);
+        while (pcNeedle[j] != '\0' && pcHaystack[i + j] != '\0'
+                && pcHaystack[i + j] == pcNeedle[j])
             j++;
-        }
 
         if (pcNeedle[j] == '\0')
             return (char *)(&pcHaystack[i]);
@@ -671,8 +670,8 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     }
 
     return 
-# 75 "stra.c" 3 4
+# 74 "stra.c" 3 4
           ((void *)0)
-# 75 "stra.c"
+# 74 "stra.c"
               ;
 }

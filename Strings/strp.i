@@ -550,7 +550,7 @@ size_t Str_getLength(const char *pcSrc) {
 }
 
 char *Str_copy(char *pcDest, const char *pcSrc) {
-    char *pcTempDest = pcDest;
+    char *pcTempDest;
     
 # 20 "strp.c" 3 4
    ((
@@ -568,6 +568,7 @@ char *Str_copy(char *pcDest, const char *pcSrc) {
    , "strp.c", 20, __extension__ __PRETTY_FUNCTION__))
 # 20 "strp.c"
                                           ;
+    pcTempDest = pcDest;
 
     while (*pcSrc != '\0')
         *(pcTempDest++) = *(pcSrc++);
@@ -577,24 +578,25 @@ char *Str_copy(char *pcDest, const char *pcSrc) {
 }
 
 char *Str_concat(char *pcDest, const char *pcSrc) {
-    char *pcTempDest = pcDest;
+    char *pcTempDest;
     
-# 31 "strp.c" 3 4
+# 32 "strp.c" 3 4
    ((
-# 31 "strp.c"
+# 32 "strp.c"
    pcDest != 
-# 31 "strp.c" 3 4
+# 32 "strp.c" 3 4
    ((void *)0) 
-# 31 "strp.c"
+# 32 "strp.c"
    && pcSrc != 
-# 31 "strp.c" 3 4
+# 32 "strp.c" 3 4
    ((void *)0)) ? (void) (0) : __assert_fail (
-# 31 "strp.c"
+# 32 "strp.c"
    "pcDest != NULL && pcSrc != NULL"
-# 31 "strp.c" 3 4
-   , "strp.c", 31, __extension__ __PRETTY_FUNCTION__))
-# 31 "strp.c"
+# 32 "strp.c" 3 4
+   , "strp.c", 32, __extension__ __PRETTY_FUNCTION__))
+# 32 "strp.c"
                                           ;
+    pcTempDest = pcDest;
 
     while (*pcTempDest != '\0')
         pcTempDest++;
@@ -608,21 +610,21 @@ char *Str_concat(char *pcDest, const char *pcSrc) {
 
 int Str_compare(const char *pcS1, const char *pcS2) {
     
-# 44 "strp.c" 3 4
+# 46 "strp.c" 3 4
    ((
-# 44 "strp.c"
+# 46 "strp.c"
    pcS1 != 
-# 44 "strp.c" 3 4
+# 46 "strp.c" 3 4
    ((void *)0) 
-# 44 "strp.c"
+# 46 "strp.c"
    && pcS2 != 
-# 44 "strp.c" 3 4
+# 46 "strp.c" 3 4
    ((void *)0)) ? (void) (0) : __assert_fail (
-# 44 "strp.c"
+# 46 "strp.c"
    "pcS1 != NULL && pcS2 != NULL"
-# 44 "strp.c" 3 4
-   , "strp.c", 44, __extension__ __PRETTY_FUNCTION__))
-# 44 "strp.c"
+# 46 "strp.c" 3 4
+   , "strp.c", 46, __extension__ __PRETTY_FUNCTION__))
+# 46 "strp.c"
                                        ;
 
     while (*pcS1 == *pcS2) {
@@ -634,26 +636,29 @@ int Str_compare(const char *pcS1, const char *pcS2) {
 
     return (int)(*pcS1 - *pcS2);
 }
+
 char *Str_search(const char *pcHaystack, const char *pcNeedle) {
-    const char * pcTempHaystack = pcHaystack;
-    const char * pcTempNeedle = pcNeedle;
+    const char * pcTempHaystack;
+    const char * pcTempNeedle;
     
-# 58 "strp.c" 3 4
+# 61 "strp.c" 3 4
    ((
-# 58 "strp.c"
+# 61 "strp.c"
    pcHaystack != 
-# 58 "strp.c" 3 4
+# 61 "strp.c" 3 4
    ((void *)0) 
-# 58 "strp.c"
+# 61 "strp.c"
    && pcNeedle != 
-# 58 "strp.c" 3 4
+# 61 "strp.c" 3 4
    ((void *)0)) ? (void) (0) : __assert_fail (
-# 58 "strp.c"
+# 61 "strp.c"
    "pcHaystack != NULL && pcNeedle != NULL"
-# 58 "strp.c" 3 4
-   , "strp.c", 58, __extension__ __PRETTY_FUNCTION__))
-# 58 "strp.c"
+# 61 "strp.c" 3 4
+   , "strp.c", 61, __extension__ __PRETTY_FUNCTION__))
+# 61 "strp.c"
                                                  ;
+    pcTempHaystack = pcHaystack;
+    pcTempNeedle = pcNeedle;
     if (*pcNeedle == '\0')
         return (char *)pcHaystack;
 
@@ -662,11 +667,9 @@ char *Str_search(const char *pcHaystack, const char *pcNeedle) {
         pcTempNeedle = pcNeedle;
         pcTempHaystack = pcHaystack;
 
-        while (*pcTempHaystack == *pcTempNeedle) {
-            if (*pcTempNeedle == '\0')
-                return (char *)(pcHaystack);
+        while (*pcTempHaystack != '\0' && *pcTempNeedle != '\0'
+                && *pcTempHaystack == *pcTempNeedle)
             pcTempNeedle++, pcTempHaystack++;
-        }
 
         if (*pcTempNeedle == '\0')
             return (char *)(pcHaystack);
@@ -674,8 +677,8 @@ char *Str_search(const char *pcHaystack, const char *pcNeedle) {
     }
 
     return 
-# 78 "strp.c" 3 4
+# 81 "strp.c" 3 4
           ((void *)0)
-# 78 "strp.c"
+# 81 "strp.c"
               ;
 }

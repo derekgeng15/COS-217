@@ -302,7 +302,7 @@ Str_search:
 .L28:
 	adrp	x0, __PRETTY_FUNCTION__.3340
 	add	x3, x0, :lo12:__PRETTY_FUNCTION__.3340
-	mov	w2, 57
+	mov	w2, 58
 	adrp	x0, .LC0
 	add	x1, x0, :lo12:.LC0
 	adrp	x0, .LC4
@@ -319,21 +319,25 @@ Str_search:
 	str	wzr, [sp, 40]
 	b	.L33
 .L35:
+	ldr	w0, [sp, 40]
+	add	w0, w0, 1
+	str	w0, [sp, 40]
+.L33:
 	ldrsw	x0, [sp, 40]
 	ldr	x1, [sp, 16]
 	add	x0, x1, x0
 	ldrb	w0, [x0]
 	cmp	w0, 0
-	bne	.L34
-	ldrsw	x0, [sp, 44]
+	beq	.L34
+	ldr	w1, [sp, 44]
+	ldr	w0, [sp, 40]
+	add	w0, w1, w0
+	sxtw	x0, w0
 	ldr	x1, [sp, 24]
 	add	x0, x1, x0
-	b	.L31
-.L34:
-	ldr	w0, [sp, 40]
-	add	w0, w0, 1
-	str	w0, [sp, 40]
-.L33:
+	ldrb	w0, [x0]
+	cmp	w0, 0
+	beq	.L34
 	ldr	w1, [sp, 44]
 	ldr	w0, [sp, 40]
 	add	w0, w1, w0
@@ -347,6 +351,7 @@ Str_search:
 	ldrb	w0, [x0]
 	cmp	w1, w0
 	beq	.L35
+.L34:
 	ldrsw	x0, [sp, 40]
 	ldr	x1, [sp, 16]
 	add	x0, x1, x0

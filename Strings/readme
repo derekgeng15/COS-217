@@ -95,7 +95,7 @@ Is it possible for Str_copy or Str_concat to call assert to verify
 that the destination memory area specified by the caller is large
 enough? Explain.
 
-Yes, use Str_getLength within each assert to determine whether there is 
-enough space to copy src into dst or append src onto dst. 
+No, as you can only read up to the null value safely, so there 
+isn't a way to check if beyond the string there is enough space.
 
 ------------------------------------------------------------------------

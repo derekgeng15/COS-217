@@ -51,6 +51,7 @@ int Str_compare(const char pcS1[], const char pcS2[]) {
     /* return difference in characters to determine order */
     return (int)(pcS1[i] - pcS2[i]);
 }
+
 char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     int i = 0; /* iterator for pcHaystack */
     int j = 0; /* iterator for pcNeedle*/
@@ -61,7 +62,7 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     while (pcHaystack[i] != '\0') {
         j = 0;
         /* increment until end of one string or no longer matching */
-        while (pcNeedle != '\0' && pcHaystack[i + j] != '\0' 
+        while (pcNeedle[j] != '\0' && pcHaystack[i + j] != '\0' 
                 && pcHaystack[i + j] == pcNeedle[j])
             j++;
         /* if end of pcNeedle is reached, return address of match */
