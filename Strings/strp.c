@@ -63,12 +63,10 @@ char *Str_search(const char *pcHaystack, const char *pcNeedle) {
     while (*pcHaystack != '\0') {
         pcTempNeedle = pcNeedle;
         pcTempHaystack = pcHaystack;
-        /* match characters from pcTempHaystack to pcTempNeedle */
-        while (*pcTempHaystack == *pcTempNeedle) {
-            if (*pcTempNeedle == '\0')
-                return (char *)(pcHaystack);
+        /* increment until end of one string or no longer matching */
+        while (*pcTempHaystack != '\0' && pcTempNeedle != '\0' 
+                && *pcTempHaystack == *pcTempNeedle)
             pcTempNeedle++, pcTempHaystack++;
-        }
         /* if end of pcTempNeedle is reached, return address of match */
         if (*pcTempNeedle == '\0')
             return (char *)(pcHaystack);

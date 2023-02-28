@@ -60,12 +60,10 @@ char *Str_search(const char pcHaystack[], const char pcNeedle[]) {
     /* iterate through all characters in pcHaystack */
     while (pcHaystack[i] != '\0') {
         j = 0;
-        /* match characters from pcHaystack to pcNeedle*/
-        while (pcHaystack[i + j] == pcNeedle[j]) {
-            if (pcNeedle[j] == '\0')
-                return (char *)(&pcHaystack[i]);
+        /* increment until end of one string or no longer matching */
+        while (pcNeedle != '\0' && pcHaystack[i + j] != '\0' 
+                && pcHaystack[i + j] == pcNeedle[j])
             j++;
-        }
         /* if end of pcNeedle is reached, return address of match */
         if (pcNeedle[j] == '\0')
             return (char *)(&pcHaystack[i]);
