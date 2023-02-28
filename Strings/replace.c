@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* replace.c                                                          */
-/* Author: ???                                                        */
+/* Author: Derek Geng                                                 */
 /*--------------------------------------------------------------------*/
 
 #include "str.h"
@@ -20,7 +20,28 @@
 static size_t replaceAndWrite(const char *pcLine,
                               const char *pcFrom, const char *pcTo)
 {
-   /* Insert your code here. */
+   size_t uReplCt = 0; /* number of replacements */
+   size_t uLen = Str_getLength(pcFrom); /* length of pcFrom */
+   char *pcHit; /* address of pcFrom found on pcLine */
+   assert(pcLine != NULL && pcFrom != NULL && pcTo != NULL);
+   /* handle edgecase for pcFrom is empty */
+   if (uLen == 0) {
+      printf("%s", pcLine);
+      return 0;
+   }
+   /* find each instance pcFrom and save to hit*/
+   while ((pcHit = Str_search(pcLine, pcFrom)) != NULL) {
+      /* print until hit*/
+      while (pcLine != pcHit)
+         putchar(*(pcLine++));
+      /* print pcTo and skip over pcFrom*/
+      printf("%s", pcTo);
+      pcLine += uLen;
+      uReplCt++; /* increment replacement*/
+   }
+   /* print remaining characters in pcLine */
+   printf("%s", pcLine);
+   return uReplCt; /* return length */
 }
 
 /*--------------------------------------------------------------------*/
@@ -56,7 +77,7 @@ int main(int argc, char *argv[])
    pcTo = argv[2];
 
    while (fgets(acLine, MAX_LINE_SIZE, stdin) != NULL)
-      /* Insert your code here. */
+      uReplaceCount += replaceAndWrite(acLine, pcFrom, pcTo);
 
    fprintf(stderr, "%lu replacements\n", (unsigned long)uReplaceCount);
    return 0;
