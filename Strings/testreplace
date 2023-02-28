@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#---------------------------------------------------------------------
+# testreplace
+# Author: Bob Dondero
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+# testreplace is a testing script for the replace program.
+# To run it, issue the command "./testreplace"
+#
+# To use it, the working directory must contain:
+# (1) replace, the executable version of your program, and
+# (2) samplereplace, the given executable binary file.
+
+# The script executes replace and samplereplace on each file
+# in the working directory that ends with ".txt" with a variety of
+# "from" and "to" strings, and compares the results.
+#---------------------------------------------------------------------
+
+# Validate the argument.
+if [ "$#" -gt "0" ]; then
+   echo "Usage: testreplace"
+   exit 1
+fi
+
+# Call testreplacediff using file 01empty.txt and a variety of
+# "from" and "to" strings.
+file=01empty.txt
+./testreplacediff $file 123 xyz
+./testreplacediff $file "" xyz
+./testreplacediff $file 123 ""
+./testreplacediff $file "" ""
+
+# Execute testreplacediff using file 02data.txt and a variety of
+# "from" and "to" strings.
+file=02data.txt
+for fromStr in "" "1" "11" "111" "1111" "2" "123" "12" "1122" \
+               "111222" "11112222"
+do
+   for toStr in "" "x" "y" "xyz" "1" "11" "111" "1111"
+   do
+      ./testreplacediff "$file" "$fromStr" "$toStr"
+   done
+done
+
+# Execute testreplacediff using file 02data.txt and a variety of
+# "from" and "to" strings.
+file=03allones.txt
+for fromStr in "" "1" "11" "111" "1111"
+do
+   for toStr in "" "x" "y" "xyz" "1" "11" "111" "1111"
+   do
+      ./testreplacediff "$file" "$fromStr" "$toStr"
+   done
+done

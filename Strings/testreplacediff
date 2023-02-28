@@ -1,0 +1,65 @@
+#!/bin/bash
+
+#---------------------------------------------------------------------
+# testreplacediff
+# Author: Bob Dondero
+#---------------------------------------------------------------------
+
+#---------------------------------------------------------------------
+# testreplacediff is a testing script for the replace program.
+# To run it, issue the command "./testreplacediff" followed by
+# the name of an input file, a "from" string, and a "to" string.
+#
+# The script runs the replace program and the given samplereplace
+# program on the specified file with the specified "from" string and
+# "to" string, and makes sure that the two programs have the same
+# exit status and write the same characters to stdout and stderr.
+#---------------------------------------------------------------------
+
+# Validate the arguments.
+if [ "$#" != "3" ]; then
+   echo "Usage: testreplacediff file fromStr toStr"
+   exit 1
+fi
+
+# Limit the amount of CPU time consumed to 2 seconds.
+ulimit -t 2
+
+# Limit the size of created files to 100*1024 bytes.
+ulimit -f 100
+
+# Capture the arguments.
+file=$1
+fromStr=$2
+toStr=$3
+
+echo "Test with file" $file "and fromStr [" $fromStr \
+   "] and toStr [" $toStr "]"
+
+# Run samplereplace on the input file, and capture its exit status.
+./samplereplace "$fromStr" "$toStr" < "$file" > __stdout1 2> __stderr1
+ret1=$?
+
+# Run replace on the input file, and capture its exit status.
+./replace "$fromStr" "$toStr" < "$file" > __stdout2 2> __stderr2
+ret2=$?
+
+# Check the exit status.
+if [ $ret1 != $ret2 ]; then
+   echo "   ***** Exit status is incorrect."
+fi
+
+# Check the stdout streams.
+diff __stdout1 __stdout2 > __diffout
+if [ $? != "0" ]; then
+   echo "   ***** stdout is incorrect."
+fi
+
+# Check the stderr streams.
+diff __stderr1 __stderr2 > __differr
+if [ $? != "0" ]; then
+   echo "   ***** stderr is incorrect."
+fi
+
+# Clean up.
+rm __stdout1 __stdout2 __stderr1 __stderr2 __diffout __differr
