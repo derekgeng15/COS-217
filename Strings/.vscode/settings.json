@@ -4,5 +4,6 @@
         "*.c": "c",
         "string.h": "c",
         "str.h": "c"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }
