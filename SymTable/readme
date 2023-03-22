@@ -2,7 +2,7 @@ Assignment 3 readme File
 
 ------------------------------------------------------------------------
 What is your name?
-
+Derek Geng
 
 
 ------------------------------------------------------------------------
@@ -12,7 +12,7 @@ in the "Policies" web page (also available on armlab in the file
 ~cos217/AuthorizedSourcesList ) to this section of the readme file,
 and edit it as appropriate.
 
-
+Ed Discussion, Assignment Page
 
 ------------------------------------------------------------------------
 What unauthorized sources of information did you use to complete the
@@ -26,12 +26,15 @@ interaction, may additionally require the interaction being reported
 to the Committee on Discipline. Write "None" if you used no
 unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 What is your assessment of the assignment? Was it helpful? Was it fun?
 
-
+Enjoyed it quite a lot! Loved how doing linked list implementation
+led smoothly into hashtable implemntation of the assignment. Also
+helped me better understand how to better design software to hide
+certain features from clients.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -46,15 +49,30 @@ disagreements with them? Copy the splint warnings here, and express your
 disagreement after each warning. If there are no warnings, then write
 "None."
 
-
+None.
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on symtablelist.c, and what are your
 disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
+The following warnings appear: 
+'''
+symtablelist.c: line 62: medium priority:
+Do you want to validate 'pvValue' through an assert?
 
+symtablelist.c: line 89: medium priority:
+Do you want to validate 'pvValue' through an assert?
 
+symtablelist.c: line 182: medium priority:
+Do you want to validate 'pvExtra' through an assert?
+'''
+
+pvValue does not need to be validated. NULL values are accepted in
+this symtable, as we never need to dereference them. 
+
+pvExtra does not need to be validated, as pfApply need not to use
+pvExtra. 
 
 ------------------------------------------------------------------------
 What warnings does splint generate on symtablehash.c, and what are your
@@ -62,15 +80,43 @@ disagreements with them? Copy the splint warnings here, and express your
 disagreement after each warning. If there are no warnings, then write
 "None."
 
+splint generates the following warning:
+'''
+symtablehash.c:73:32: Value newBucket[] used before definition
+  An rvalue is used that may not be initialized to a value on some execution
+  path. (Use -usedef to inhibit warning)
+'''
 
-
+However, when initializing newBucket I used the following loop to
+set all values to null:
+'''
+for (i = 0; i < numBuckets[oSymTable->bIndex + 1]; i++)
+        newBucket[i] = NULL;
+'''
+Therefore, using newBucket[] should be safe.
 ------------------------------------------------------------------------
 What warnings does critTer generate on symtablehash.c, and what are your
 disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
+The following warnings appear: 
+'''
+symtablehash.c: line 126: medium priority:
+Do you want to validate 'pvValue' through an assert?
 
+symtablehash.c: line 158: medium priority:
+Do you want to validate 'pvValue' through an assert?
+
+symtablehash.c: line 254: medium priority:
+Do you want to validate 'pvExtra' through an assert?
+'''
+
+pvValue does not need to be validated. NULL values are accepted in
+this symtable, as we never need to dereference them. 
+
+pvExtra does not need to be validated, as pfApply need not to use
+pvExtra. 
 
 ------------------------------------------------------------------------
 What are the CPU times reported by testsymtable.c with binding counts
@@ -79,22 +125,22 @@ implementation, (2) your non-expanding hash table implementation, and
 (3) your expanding hash table implementation? Fill in the blanks.
 
 The linked list implementation with:
--- 50 bindings consumed ________ seconds.
--- 500 bindings consumed ________ seconds.
--- 5000 bindings consumed ________ seconds.
--- 50000 bindings consumed ________ seconds.
--- 500000 bindings consumed ________ seconds.
+-- 50 bindings consumed 0.000 seconds.
+-- 500 bindings consumed 0.007 seconds.
+-- 5000 bindings consumed 1.042 seconds.
+-- 50000 bindings consumed 102.880 seconds.
+-- 500000 bindings consumed NaN seconds.
 
 The non-expanding hash table implementation with:
--- 50 bindings consumed ________ seconds.
--- 500 bindings consumed ________ seconds.
--- 5000 bindings consumed ________ seconds.
--- 50000 bindings consumed ________ seconds.
--- 500000 bindings consumed ________ seconds.
+-- 50 bindings consumed 0.000 seconds.
+-- 500 bindings consumed 0.000 seconds.
+-- 5000 bindings consumed 0.012 seconds.
+-- 50000 bindings consumed 0.354 seconds.
+-- 500000 bindings consumed 68.817 seconds.
 
 The expanding hash table implementation with:
--- 50 bindings consumed ________ seconds.
--- 500 bindings consumed ________ seconds.
--- 5000 bindings consumed ________ seconds.
--- 50000 bindings consumed ________ seconds.
--- 500000 bindings consumed ________ seconds.
+-- 50 bindings consumed 0.000 seconds.
+-- 500 bindings consumed 0.002 seconds.
+-- 5000 bindings consumed 0.011 seconds.
+-- 50000 bindings consumed 0.124 seconds.
+-- 500000 bindings consumed 1.676 seconds.
