@@ -1,0 +1,190 @@
+Assignment 4 readme File
+
+------------------------------------------------------------------------
+Student 1: What is your name?
+
+Emily Luo
+
+------------------------------------------------------------------------
+Student 2: What is your name?
+
+Derek Geng
+
+------------------------------------------------------------------------
+Student 1: What authorized sources of information did you use to
+complete the assignment? COPY THE LIST of authorized sources of
+information given in the "Policies" web page (also available on armlab
+in the file ~cos217/AuthorizedSourcesList ) to this section of the
+readme file, and edit it as appropriate.
+
+- The course's lectures.
+- The course's precepts.
+- The course's website.
+- Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+- The course's textbooks.
+- The man pages on the armlab cluster.
+- The course's current staff members outside of class time 
+through office hours.
+- The course's current staff members outside of class time through Ed.
+
+------------------------------------------------------------------------
+Student 2: What authorized sources of information did you use to
+complete the assignment? COPY THE LIST of authorized sources of
+information given in the "Policies" web page (also available on armlab
+in the file ~cos217/AuthorizedSourcesList ) to this section of the
+readme file, and edit it as appropriate.
+
+- The course's lectures.
+- The course's precepts.
+- The course's website.
+- Documents that are referenced directly by the course's website. 
+Such documents include the course's lecture slides and precept handouts.
+- The course's textbooks.
+- The man pages on the armlab cluster.
+- The course's current staff members outside of class time 
+through office hours.
+- The course's current staff members outside of class time through Ed.
+
+
+------------------------------------------------------------------------
+Student 1: What unauthorized sources of information did you use to
+complete the assignment? List any unauthorized sources of information
+that you used to complete the assignment, and describe how you used
+them. The course "Policies" web page defines unauthorized sources of
+information, and any source that you have used but not listed in the
+authorized sources should be included here. Please note that using an
+unauthorized source may trigger a course penalty, and depending on the
+nature of the interaction, may additionally require the interaction
+being reported to the Committee on Discipline. Write "None" if you used
+no unauthorized sources of information.
+
+None
+
+------------------------------------------------------------------------
+Student 2: What unauthorized sources of information did you use to
+complete the assignment? List any unauthorized sources of information
+that you used to complete the assignment, and describe how you used
+them. The course "Policies" web page defines unauthorized sources of
+information, and any source that you have used but not listed in the
+authorized sources should be included here. Please note that using an
+unauthorized source may trigger a course penalty, and depending on the
+nature of the interaction, may additionally require the interaction
+being reported to the Committee on Discipline. Write "None" if you used
+no unauthorized sources of information.
+
+None
+
+------------------------------------------------------------------------
+Student 1: What is your assessment of the assignment? Was it helpful?
+Was it fun?
+
+I thought the first two parts of this assignment were challenging - it 
+was frustrating at first to not be able to see the actual code. The last
+part I thought was pretty fun.
+
+------------------------------------------------------------------------
+Student 2: What is your assessment of the assignment? Was it helpful?
+Was it fun?
+
+It was fun. Learned how to use GDB, more rigorous background in testing.
+Especially found parts 2 and 3 fun, enjoyed making checker by invariants
+and a generic file system. 
+
+Overall, my main criticism for this assignment are that I believe in part 
+3,leaving option 1 as an option is misleading. No one should try to 
+implement dir and files separately, and people will both learn more and
+have an easier time with only option 2. 
+
+
+------------------------------------------------------------------------
+(optional) What information can you provide about your submission that
+will help your grader to grade it in the most favorable light? In
+particular, what bugs are in your submission?
+
+
+
+------------------------------------------------------------------------
+What warnings does splint generate for Part 2's checker, and what are
+your disagreements with them? Copy the splint warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+None
+
+------------------------------------------------------------------------
+What warnings does critTer generate on checkerDT.c, and what are your
+disagreements with them? Copy the critTer warnings here, and express
+your disagreement after each warning. If there are no warnings, then
+write "None."
+
+None
+
+------------------------------------------------------------------------
+What warnings does splint generate on your Part 3 code, and what are
+your disagreements with them? Copy the splint warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+None
+
+------------------------------------------------------------------------
+What warnings does critTer generate on your Part 3 code, and what are
+your disagreements with them? Copy the critTer warnings here, and
+express your disagreement after each warning. If there are no
+warnings, then write "None."
+
+ft.c: line 214: medium priority:
+   Do you want to validate 'pvContents' through an assert?
+ft.c: line 348: medium priority:
+   Do you want to validate 'pvContents' through an assert?
+ft.c: line 387: medium priority:
+   Do you want to validate 'pvNewContents' through an assert?
+nodeFT.c: line 249: medium priority:
+   Do you want to validate 'pvContents' through an assert?
+nodeFT.c: line 272: medium priority:
+   Do you want to validate 'pvContents' through an assert?
+
+We do not want to validate pvContents or pvNewContents through an assert 
+b/c we are allowed to insert NULL file contents.
+
+------------------------------------------------------------------------
+For each of the five faulty BDT implementations required by Step
+1.5, identify the function where there is a bug. You do not have to
+identify the bug itself, only its location, but note that this must be
+the location of the underlying error, which is not necessarily where
+the error manifests itself or is "noticed" by the client.
+
+
+      Executable         Function with the underlying error
+===============================================================
+         ./bdtBad1        BDT_insert
+---------------------------------------------------------------
+         ./bdtBad2        BDT_freeSubtree
+---------------------------------------------------------------
+         ./bdtBad3        BDT_addChild
+---------------------------------------------------------------
+         ./bdtBad4        BDT_strlenAccumulate
+---------------------------------------------------------------
+         ./bdtBad5        BDT_findNode
+===============================================================
+
+------------------------------------------------------------------------
+What are your critiques of the given DT implementations, as
+specified in Step 2.5?
+
+1. In Node_new in nodeDTGood, there is a comment above the function 
+explaining what it does. This is unnecessary because the same comment 
+already appears in the node header file.
+
+2. In dtGood.c, the two if statements on lines 150 and 156 can be 
+combined into one if(condition1 || condition2) statement because the two
+blocks perform the same action.
+
+3. In nodeDTGood.c, the static function Node_addChild is unnecessary. 
+This is because it is only called once in the node file and all it does
+is call DynArray_addAt. It does has a bunch of asserts, but at the point
+in the Node_new functions, all those assertions have been proven true 
+otherwise the prcoess would've ended already.
+
+------------------------------------------------------------------------
