@@ -1,0 +1,170 @@
+Emily Luo, Derek Geng
+
+data:
+Address | Content  | Description
+0x420044|0x00000044| grade variable
+
+bss:
+Address | Description
+0x420058| name[0]           D
+0x420059| name[1]           e 
+0x42005A| name[2]           r
+0x42005B| name[3]           e
+0x42005C| name[4]           k
+0x42005D| name[5] 
+0x42005E| name[6]           G
+0x42005F| name[7]           e
+0x420060| name[8]           n
+0x420061| name[9]           g
+0x420062| name[10]          \0
+0x420063| name[11]          0
+0x420064| name[12]-[15]     mov w0, 0x41     
+0x420068| name[16]-[19]     adr w1, 0x420044
+0x42006C| name[20]-[23]     strb w0, x1
+0x420070| name[24]-[27]     b 0x400864
+0x420074| name[28]          0
+0x420075| name[29]          0
+0x420076| name[30]          0
+0x420077| name[31]          0
+0x420078| name[32]          0
+0x420079| name[33]          0
+0x42007A| name[34]          0
+0x42007B| name[35]          0
+0x42007C| name[36]          0
+0x42007D| name[37]          0
+0x42007E| name[38]          0
+0x42007F| name[39]          0
+0x420080| name[40]          0
+0x420081| name[41]          0
+0x420082| name[42]          0
+0x420083| name[43]          0
+0x420084| name[44]          0
+0x420085| name[45]          0
+0x420086| name[46]          0
+0x420087| name[47]          0
+
+
+
+stack:
+Offset | Description
+0      | x30 - (terminanting address)
+8      | x30 - (ret address to main)
+16     | x20 - (c)
+24     | x19 - (i)
+32     | buf
+40     | buf
+48     | buf
+56     | buf
+64     | buf
+72     | buf
+80     | x30 - (ret address to getName)
+
+
+// Prolog
+0x400780 <readString>:       sub     sp, sp, #0x50
+0x400784 <readString+4>:     stp     x19, x20, [sp]
+0x400788 <readString+8>:     stp     x21, x30, [sp, #16]
+
+// First loop setup
+0x40078c <readString+12>:    mov     x19, #0x0                       // #0
+0x400790 <readString+16>:    adrp    x21, 0x420000 <__libc_start_main@got.plt>
+
+// First loop
+0x400794 <readString+20>:    mov     w20, w19
+0x400798 <readString+24>:    ldr     x0, [x21, #72]
+0x40079c <readString+28>:    bl      0x4005b0 <fgetc@plt>
+0x4007a0 <readString+32>:    cmp     w0, #0xa
+0x4007a4 <readString+36>:    b.eq    0x4007c0 <readString+64>  // b.none
+0x4007a8 <readString+40>:    cmn     w0, #0x1
+0x4007ac <readString+44>:    b.eq    0x4007c0 <readString+64>  // b.none
+0x4007b0 <readString+48>:    add     x1, sp, #0x20
+0x4007b4 <readString+52>:    strb    w0, [x19, x1]
+0x4007b8 <readString+56>:    add     x19, x19, #0x1
+0x4007bc <readString+60>:    b       0x400794 <readString+20>
+
+// buf[i] = '\0'
+0x4007c0 <readString+64>:    add     x0, sp, #0x20
+0x4007c4 <readString+68>:    strb    wzr, [x0, w20, sxtw]
+
+// Second loop setup
+0x4007c8 <readString+72>:    mov     x0, #0x0                        // #0
+0x4007cc <readString+76>:    adrp    x2, 0x420000 <__libc_start_main@got.plt>
+0x4007d0 <readString+80>:    add     x2, x2, #0x58
+
+// Second loop
+0x4007d4 <readString+84>:    add     x1, sp, #0x20
+0x4007d8 <readString+88>:    ldrb    w1, [x0, x1]
+0x4007dc <readString+92>:    strb    w1, [x0, x2]
+0x4007e0 <readString+96>:    add     x0, x0, #0x1
+0x4007e4 <readString+100>:   cmp     x0, #0x30
+0x4007e8 <readString+104>:   b.ne    0x4007d4 <readString+84>  // b.any
+
+// Epilog and return
+0x4007ec <readString+108>:   ldp     x19, x20, [sp]
+0x4007f0 <readString+112>:   ldp     x21, x30, [sp, #16]
+0x4007f4 <readString+116>:   add     sp, sp, #0x50
+0x4007f8 <readString+120>:   ret
+
+// Prolog
+0x4007fc <getName>:          sub     sp, sp, #0x10
+0x400800 <getName+4>:        str     x30, [sp]
+
+// printf("What is your name?\n");
+0x400804 <getName+8>:        adrp    x0, 0x400000
+0x400808 <getName+12>:       add     x0, x0, #0x938
+0x40080c <getName+16>:       bl      0x4005e0 <puts@plt>
+
+// readString();
+0x400810 <getName+20>:       bl      0x400780 <readString>
+
+// Epilog and return
+0x400814 <getName+24>:       ldr     x30, [sp]
+0x400818 <getName+28>:       add     sp, sp, #0x10
+0x40081c <getName+32>:       ret
+
+// Prolog
+0x400820 <main>:             sub     sp, sp, #0x10
+0x400824 <main+4>:           stp     x19, x30, [sp]
+
+// mprotect(...);
+0x400828 <main+8>:           adrp    x19, 0x420000 <__libc_start_main@got.plt>
+0x40082c <main+12>:          add     x19, x19, #0x58
+0x400830 <main+16>:          and     x0, x19, #0xfffffffffffff000
+0x400834 <main+20>:          mov     x1, #0x1                        // #1
+0x400838 <main+24>:          mov     w2, #0x7                        // #7
+0x40083c <main+28>:          bl      0x400610 <mprotect@plt>
+
+// getName();
+0x400840 <main+32>:          bl      0x4007fc <getName>
+
+// if (strcmp(name, "Andrew Appel") != 0) skip assignment to grade
+0x400844 <main+36>:          mov     x0, x19
+0x400848 <main+40>:          adrp    x1, 0x400000
+0x40084c <main+44>:          add     x1, x1, #0x950
+0x400850 <main+48>:          bl      0x4005f0 <strcmp@plt>
+0x400854 <main+52>:          cbnz    w0, 0x400864 <main+68>
+
+// grade = 'B';
+0x400858 <main+56>:          mov     w1, #0x42                       // #66
+0x40085c <main+60>:          adrp    x0, 0x420000 <__libc_start_main@got.plt>
+0x400860 <main+64>:          strb    w1, [x0, #68]
+
+// printf("%c is your grade.\n", grade);
+0x400864 <main+68>:          adrp    x0, 0x400000
+0x400868 <main+72>:          add     x0, x0, #0x960
+0x40086c <main+76>:          adrp    x1, 0x420000 <__libc_start_main@got.plt>
+0x400870 <main+80>:          ldrb    w1, [x1, #68]
+0x400874 <main+84>:          bl      0x400600 <printf@plt>
+
+// printf("Thank you, %s.\n", name);
+0x400878 <main+88>:          adrp    x0, 0x400000
+0x40087c <main+92>:          add     x0, x0, #0x978
+0x400880 <main+96>:          adrp    x1, 0x420000 <__libc_start_main@got.plt>
+0x400884 <main+100>:         add     x1, x1, #0x58
+0x400888 <main+104>:         bl      0x400600 <printf@plt>
+
+// Epilog and return 0
+0x40088c <main+108>:         mov     w0, #0x0                        // #0
+0x400890 <main+112>:         ldp     x19, x30, [sp]
+0x400894 <main+116>:         add     sp, sp, #0x10
+0x400898 <main+120>:         ret
